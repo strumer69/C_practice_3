@@ -10,17 +10,19 @@ class Participant
         string FirstName;
         string SurName;
         bool Wins;
-        int Number,Height,Weight,YearOfBirth,Ngames,Ties,Points,selection;
+        int Number,Height,Weight,YearOfBirth,Ngames,Ties,Points,NWins,selection;
         friend istream &operator >>(istream &is , const Participant &par);
         friend ostream &operator << (ostream &os , const Participant &par);
 
         //constructor
         Participant(string fn="", string sn="",bool wins_=false , int n=0,int h=0, 
-                     int w=0 , int y=0 , int ng=0 , int t=0, int p=0, int s=0)
-                     :FirstName(fn),SurName(sn),Wins(wins_),Number(n),Height(h),
-                     Weight(w),YearOfBirth(y),Ngames(ng),Ties(t),Points(p),selection(s){}
+                    int w=0 , int y=0 , int ng=0 , int t=0, int p=0, int s=0, int nw=0)
+                    :FirstName(fn),SurName(sn),Wins(wins_),Number(n),Height(h),Weight(w),
+                    YearOfBirth(y),Ngames(ng),Ties(t),Points(p),selection(s),NWins(nw){}
 
 };
+
+//operator  for data recording
 istream & operator >>(istream &is , Participant &par)
 {
 
@@ -40,10 +42,13 @@ istream & operator >>(istream &is , Participant &par)
     is >> par.Weight;
 
     cout <<" YearOfBirth:";
-    is >> par.Number;
+    is >> par.YearOfBirth;
     
     return is;
 }
+
+
+//comparative operator 
 bool operator >= (const Participant &p1 , const Participant &p2)
 {
     if(p1.Wins)
@@ -124,14 +129,14 @@ bool operator >= (const Participant &p1 , const Participant &p2)
     return true;
 }
 
-
+//output the data
 ostream &operator<<(ostream &os,Participant & par)
 {
     os<< par.FirstName << " " 
     <<par.SurName << ","
     <<par.YearOfBirth<<","
     <<par.Height <<" cm,"
-    <<par.Weight<< "kg, participated in "
+    <<par.Weight<< " kg, participated in "
     <<par.Ngames << " combat games: "
     <<par.Wins << " x won,"
     <<par.Ties << " x tie = "
@@ -148,27 +153,30 @@ int main()
   do
   {
     cout << "***GAME***"<<endl;
-    cout << endl << endl;
+    cout << endl ;
     cout << "[1] Creat Player" << endl;
     cout << "[2] Manage combat Game" << endl;
     cout << "[3] Output of all players" << endl;
     cout << "[4] Output winner."<<endl;
     cout << "[5] Exit" << endl<< endl;
     cout<<"Please select: " << endl;
+
     int selection=0;
     cin >>selection;
+
     switch (selection)
     {
     case 1:
         if (i!=6){
-            cin >> players[i];
+            cin >> players[i];//operator using
             i++;
         } else{
             cout<< "max of participants reached!!"<<endl;
         }
     break;
+
     case 2:
-        cout<< "***Manage Game Combat***"<<endl<<endl;
+        cout<< "***Manage Game Combat***"<<endl;
         cout << "Enter a number (1 to 6) "<<endl;
         cout<< "player first:";
         int f;
@@ -190,35 +198,55 @@ int main()
         {
             players[f].Points+=10;
             players[f].Wins=1;
+            players[f].Ngames+=1;
+            players[f].NWins+=1;
         }
         else if(cr==2)
         {
             players[s].Points+=10;
             players[f].Wins=1;
+            players[s].NWins +=1;
         }
         else if (cr==3)
         {
             players[f].Points+=5;
             players[s].Points+=5;
+            players[f].Ties+=1;
+            players[s].Ties+=1;
+            players[f].Ngames+=1;
+            players[s].Ngames+=1;
         }
         else{
             cout<<"wrong selection!!"<<endl;
         }
 
+        //operator >= 
         players[f-1]>=players[s-1];
         break;
     case 3:
+        cout<< "*** OutPut of all Players ***"<<endl<<endl;
+
         for (int j=0 ; j < 6;j++)
         {
-            cout<< players[j];
+            if(players[j].FirstName!="")
+            {
+                cout << players[j];//operator overloading
+            }
+            
         }
         
 
         break;
+    case 4:
+        cout << "*** THE FINAL WINNER *** "<<endl;
+        
+        break;
+
 
 
     case 5:
-        cout <<"good Bye";
+        cout<< "***thank you so much for participating in this game***"<<endl;
+        cout <<"good Bye"<< endl;
         return false;
     
     default:
