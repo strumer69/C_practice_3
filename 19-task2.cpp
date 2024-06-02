@@ -9,78 +9,226 @@ class Participant
     public:
         string FirstName;
         string SurName;
-        int Number ,Height ,Weight ,Points ,YearOfBirth;
-        friend istream &operator >>(istream &is , const Participant &dt);
+        bool Wins;
+        int Number,Height,Weight,YearOfBirth,Ngames,Ties,Points,selection;
+        friend istream &operator >>(istream &is , const Participant &par);
+        friend ostream &operator << (ostream &os , const Participant &par);
+
 };
-istream &operator>>(istream &is,Participant & dt)
+istream & operator >>(istream &is , Participant &par)
 {
+
     cout << " First Name: ";
-    is >> dt.FirstName;
+    is >> par.FirstName;
 
     cout <<" SurName : ";
-    is >> dt.SurName;
+    is >> par.SurName;
 
-    cout <<" Number:";
-    is >> dt.Number;
+    cout <<" Number (1 to 6):";
+    is >> par.Number;
 
-    cout <<" Height:";
-    is >> dt.Height;
+    cout <<" Height in cm:";
+    is >> par.Height;
 
-    cout <<" Weight:";
-    is >> dt.Weight;
-
-    cout <<" Points:";
-    is >> dt.Points;
+    cout <<" Weight in kg:";
+    is >> par.Weight;
 
     cout <<" YearOfBirth:";
-    is >> dt.Number;
+    is >> par.Number;
     
     return is;
 }
+bool operator >= (const Participant &p1 , const Participant &p2)
+{
+    if(p1.Wins)
+    {
+        cout <<endl << endl 
+        << "Player "<< p1.FirstName<< " "<< p1.SurName
+        <<" has won, he/she is " <<abs(p1.Height-p2.Height);
+        if (p1.Height> p2.Height)
+        {
+            cout<<" cm taller and ";
+        }
+        else if(p1.Height<p2.Height)
+        {
+            cout<< "  cm shorter and ";
+        }
+        else
+        {
+            cout<< " cm taller or shorter and ";
+        }
+
+        cout << abs(p1.Weight-p2.Weight);
+        if (p1.Weight> p2.Weight)
+        {
+            cout<<" kg heavier than ";
+        }
+        else if(p1.Weight<p2.Weight)
+        {
+            cout<< "  kg lighter than ";
+        }
+        else
+        {
+            cout<< " kg heavier or lighter than ";
+        }
+        cout << "Player "<< p2.FirstName<< " "<< p2.SurName<<"."<<endl;
+        
+        return true;
+    }
+    else if (p2.Wins)
+    {
+        cout <<endl << endl 
+        << "Player "<< p2.FirstName<< " "<< p2.SurName
+        <<" has won, he/she is " <<abs(p2.Height-p1.Height);
+        if (p2.Height> p1.Height)
+        {
+            cout<<" cm taller and ";
+        }
+        else if(p2.Height<p1.Height)
+        {
+            cout<< "  cm shorter and ";
+        }
+        else
+        {
+            cout<< " cm taller or shorter and ";
+        }
+
+        cout << abs(p2.Weight-p1.Weight);
+        if (p2.Weight> p1.Weight)
+        {
+            cout<<" kg heavier than ";
+        }
+        else if(p2.Weight<p1.Weight)
+        {
+            cout<< "  kg lighter than ";
+        }
+        else
+        {
+            cout<< " kg heavier or lighter than ";
+        }
+        cout << "Player "<< p1.FirstName<< " "<< p1.SurName<<"."<<endl;
+        return true;
+
+        
+    }
+    else 
+    {
+        cout << endl << endl << "A draw!  there is no winner "<<endl;
+    }
+    return true;
+}
+
+
+ostream &operator<<(ostream &os,Participant & par)
+{
+    os<< par.FirstName << " " 
+    <<par.SurName << ","
+    <<par.YearOfBirth<<","
+    <<par.Height <<" cm,"
+    <<par.Weight<< "kg, participated in "
+    <<par.Ngames << " combat games: "
+    <<par.Wins << " x won,"
+    <<par.Ties << " x tie = "
+    <<par.Points << " Points."<<endl;
+    return os;
+    
+}
+
 
 
 int main()
 {
-    
-    do
+    Participant players[6];
+    int i=0;//for participation array insertion
+  do
+  {
+    cout << "***GAME***"<<endl;
+    cout << endl << endl;
+    cout << "[1] Creat Player" << endl;
+    cout << "[2] Manage combat Game" << endl;
+    cout << "[3] Output of all players" << endl;
+    cout << "[4] Output winner."<<endl;
+    cout << "[5] Exit" << endl<< endl;
+    cout<<"Please select: " << endl;
+    int selection=0;
+    cin >>selection;
+    switch (selection)
     {
-        cout << endl <<endl << endl << endl;
-        cout << "-----MENU-----" << endl;
-        cout << "[1] Creat Player" << endl;
-        cout << "[2] Manage combat Game" << endl;
-        cout << "[3] Output of all players" << endl;
-        cout << "[4] Output winner."<<endl;
-        cout << "[5] Exit" << endl<< endl;
-        cout<<"Please select: " << endl;
-        
-        int select;
-        cin >> select;
-
-        switch (select){
-            case 1:
-                Participant dt;
-                cin >> dt;
-                break;
-            
-            case 2:            
-                break;
-            
-            case 3:
-            
-                break;
-            case 4:
-
-                break ;
-            case 5:
-                cout <<"Good Bye"<<endl;
-                return 0;
-        
-            default: 
-                cout << "wrong selection!" << endl;
+    case 1:
+        if (i!=6){
+            cin >> players[i];
+            i++;
+        } else{
+            cout<< "max of participants reached!!"<<endl;
         }
+    break;
+    case 2:
+        cout<< "***Manage Game Combat***"<<endl<<endl;
+        cout << "Enter a number (1 to 6) "<<endl;
+        cout<< "player first:";
+        int f;
+        cin >> f;
+        cout << "Enter a number (1 to 6) "<<endl;
+        cout<< " player second:";
+        int s;
+        cin >>s;
+        players[f].Wins=0;
+        players[s].Wins=0;
+        
+        cout << " what is the result? "<<endl;
+        cout<<"[1] first player wins" <<endl;
+        cout<<"[2] second player wins "<<endl;
+        cout<<"[3] draw or equality"<<endl;
+        int cr;//combat result
+        cin >>cr;
+        if (cr==1)
+        {
+            players[f].Points+=10;
+            players[f].Wins=1;
+        }
+        else if(cr==2)
+        {
+            players[s].Points+=10;
+            players[f].Wins=1;
+        }
+        else if (cr==3)
+        {
+            players[f].Points+=5;
+            players[s].Points+=5;
+        }
+        else{
+            cout<<"wrong selection!!"<<endl;
+        }
+
+        players[f-1]>=players[s-1];
+        break;
+    case 3:
+        for (int j=1 ; j < 7;j++)
+        {
+            cout<< players[j];
+        }
+        
+
+        break;
+
+
+    case 5:
+        cout <<"good Bye";
+        return false;
     
-    } while (select != 0); 
+    default:
+        cout << " wrong selection ";
+    break;
+    }
+
+    // input >> s.selection;
+    // return input;
+    // cin>> players[0];
+
+    false;
+  } while (true);
+  
 
 return 0;
-}
+}   
 
