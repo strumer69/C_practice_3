@@ -231,32 +231,46 @@ int main()
             if(players[j].FirstName!="")
             {
                 cout << players[j];//operator overloading
-            }
-            
+            }   
         }
-        
-
         break;
     case 4:
-        cout << "*** THE FINAL WINNER *** "<<endl;
-        
+        cout << "*** THE FINAL WINNER *** " << endl;
+    
+        int maxPoints = -1; 
+        int winnerIndex = -1;
+
+        for (int j = 0; j < 6; j++)
+        {
+            if (players[j].FirstName != "" && players[j].Points > maxPoints)
+            {
+                maxPoints = players[j].Points;
+                winnerIndex = j;
+            }
+        }
+
+        if (winnerIndex != -1)
+        {
+            cout << "The winner is: " << players[winnerIndex].FirstName << " " 
+            << players[winnerIndex].SurName << endl;
+            cout << "Total points: " << players[winnerIndex].Points << endl;
+        }
+        else
+        {
+            cout << "No winner found!" << endl;
+        }
+    
+         
         break;
-
-
-
     case 5:
         cout<< "***thank you so much for participating in this game***"<<endl;
         cout <<"good Bye"<< endl;
         return false;
     
     default:
-        cout << " wrong selection ";
+        cout << " wrong selection "<<endl;
     break;
     }
-
-    // input >> s.selection;
-    // return input;
-    // cin>> players[0];
 
     false;
   } while (true);
