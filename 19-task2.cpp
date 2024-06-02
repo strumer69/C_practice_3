@@ -14,6 +14,12 @@ class Participant
         friend istream &operator >>(istream &is , const Participant &par);
         friend ostream &operator << (ostream &os , const Participant &par);
 
+        //constructor
+        Participant(string fn="", string sn="",bool wins_=false , int n=0,int h=0, 
+                     int w=0 , int y=0 , int ng=0 , int t=0, int p=0, int s=0)
+                     :FirstName(fn),SurName(sn),Wins(wins_),Number(n),Height(h),
+                     Weight(w),YearOfBirth(y),Ngames(ng),Ties(t),Points(p),selection(s){}
+
 };
 istream & operator >>(istream &is , Participant &par)
 {
@@ -135,7 +141,6 @@ ostream &operator<<(ostream &os,Participant & par)
 }
 
 
-
 int main()
 {
     Participant players[6];
@@ -203,7 +208,7 @@ int main()
         players[f-1]>=players[s-1];
         break;
     case 3:
-        for (int j=1 ; j < 7;j++)
+        for (int j=0 ; j < 6;j++)
         {
             cout<< players[j];
         }
