@@ -32,8 +32,8 @@ istream & operator >>(istream &is , Participant &par)
     cout <<" SurName : ";
     is >> par.SurName;
 
-    cout <<" Number (1 to 6):";
-    is >> par.Number;
+    // cout <<" Number (1 to 6):";
+    // is >> par.Number;
 
     cout <<" Height in cm:";
     is >> par.Height;
@@ -138,8 +138,8 @@ ostream &operator<<(ostream &os,Participant & par)
     <<par.Height <<" cm,"
     <<par.Weight<< " kg, participated in "
     <<par.Ngames << " combat games: "
-    <<par.Wins << " x won,"
-    <<par.Ties << " x tie = "
+    <<par.NWins << " x won,"
+    <<par.Ties << " x tie and "
     <<par.Points << " Points."<<endl;
     return os;
     
@@ -150,6 +150,8 @@ int main()
 {
     Participant players[6];
     int i=0;//for participation array insertion
+    int maxPoints = -1; 
+    int winnerIndex = -1;
   do
   {
     cout << "***GAME***"<<endl;
@@ -171,7 +173,7 @@ int main()
             cin >> players[i];//operator using
             i++;
         } else{
-            cout<< "max of participants reached!!"<<endl;
+            cout<< " max of participants reached!!"<<endl;
         }
     break;
 
@@ -181,13 +183,24 @@ int main()
         cout<< "player first:";
         int f;
         cin >> f;
+        f--;
+         if(players[f].Ngames>2)
+        {
+            cout<< "max number of playing for this player reached!!"<<endl;
+            break;
+        }
         cout << "Enter a number (1 to 6) "<<endl;
         cout<< " player second:";
         int s;
         cin >>s;
-        players[f].Wins=0;
-        players[s].Wins=0;
-        
+        s--;
+
+        if(players[s].Ngames>2
+        )
+        {
+            cout<< "max number of playing for this player reached!!"<<endl;
+            break;
+        }
         cout << " what is the result? "<<endl;
         cout<<"[1] first player wins" <<endl;
         cout<<"[2] second player wins "<<endl;
@@ -198,19 +211,27 @@ int main()
         {
             players[f].Points+=10;
             players[f].Wins=1;
+            players[s].Wins=0;
             players[f].Ngames+=1;
+            players[s].Ngames+=1;
             players[f].NWins+=1;
         }
         else if(cr==2)
         {
             players[s].Points+=10;
-            players[f].Wins=1;
+            players[s].Wins=1;
+            players[f].Wins=0;
             players[s].NWins +=1;
+            players[s].Ngames+=1;
+            players[f].Ngames+=1;
         }
         else if (cr==3)
         {
+            
             players[f].Points+=5;
             players[s].Points+=5;
+            players[f].Wins=0;
+            players[s].Wins=0;
             players[f].Ties+=1;
             players[s].Ties+=1;
             players[f].Ngames+=1;
@@ -221,7 +242,7 @@ int main()
         }
 
         //operator >= 
-        players[f-1]>=players[s-1];
+        players[f]>=players[s];
         break;
     case 3:
         cout<< "*** OutPut of all Players ***"<<endl<<endl;
@@ -236,9 +257,6 @@ int main()
         break;
     case 4:
         cout << "*** THE FINAL WINNER *** " << endl;
-    
-        int maxPoints = -1; 
-        int winnerIndex = -1;
 
         for (int j = 0; j < 6; j++)
         {
@@ -251,16 +269,14 @@ int main()
 
         if (winnerIndex != -1)
         {
-            cout << "The winner is: " << players[winnerIndex].FirstName << " " 
+            cout << "The winner : " << players[winnerIndex].FirstName << " " 
             << players[winnerIndex].SurName << endl;
-            cout << "Total points: " << players[winnerIndex].Points << endl;
+            cout << "sum of points: " << players[winnerIndex].Points << endl;
         }
         else
         {
             cout << "No winner found!" << endl;
         }
-    
-         
         break;
     case 5:
         cout<< "***thank you so much for participating in this game***"<<endl;
@@ -272,7 +288,7 @@ int main()
     break;
     }
 
-    false;
+    
   } while (true);
   
 
